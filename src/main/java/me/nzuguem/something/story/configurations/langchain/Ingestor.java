@@ -1,7 +1,8 @@
 package me.nzuguem.something.story.configurations.langchain;
 
 import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.document.UrlDocumentLoader;
+import dev.langchain4j.data.document.loader.UrlDocumentLoader;
+import dev.langchain4j.data.document.parser.TextDocumentParser;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
@@ -46,7 +47,7 @@ public class Ingestor {
     private List<Document> loadDocuments() {
 
         return this.documentsSources.stream()
-                .map(UrlDocumentLoader::load)
+                .map(url -> UrlDocumentLoader.load(url, new TextDocumentParser()))
                 .toList();
     }
 }
