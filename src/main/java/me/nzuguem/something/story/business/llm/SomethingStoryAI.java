@@ -2,9 +2,10 @@ package me.nzuguem.something.story.business.llm;
 
 import dev.langchain4j.service.UserMessage;
 import io.quarkiverse.langchain4j.RegisterAiService;
+import me.nzuguem.something.story.configurations.langchain.RetrieverModel;
 
 @RegisterAiService(
-        retrieverSupplier = RegisterAiService.BeanRetrieverSupplier.class
+        retriever = RetrieverModel.class
 )
 public interface SomethingStoryAI {
 
