@@ -1,10 +1,8 @@
 package me.nzuguem.something.story.configurations.langchain;
 
 import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.document.DocumentParser;
 import dev.langchain4j.data.document.loader.UrlDocumentLoader;
-import dev.langchain4j.data.document.parser.TextDocumentParser;
-import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
+import dev.langchain4j.data.document.parser.apache.tika.ApacheTikaDocumentParser;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
@@ -49,16 +47,8 @@ public class Ingestor {
 
     private List<Document> loadDocuments() {
 
-        Function<URL, DocumentParser> parser = url -> {
-            var extension = url.getPath().substring(url.getPath().lastIndexOf(".") + 1);
-            return switch (extension) {
-                case "pdf" -> new ApachePdfBoxDocumentParser();
-                default -> new TextDocumentParser();
-            };
-        };
-
         return this.documentsSources.stream()
-                .map(url -> UrlDocumentLoader.load(url, parser.apply(url)))
+                .map(url -> UrlDocumentLoader.load(url, new ApacheTikaDocumentParser()))
                 .toList();
     }
 }
